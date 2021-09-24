@@ -28,6 +28,24 @@ public Task<int> AddAsync(int x, int y)
 
 ```
 
+### Cancellation Token
+
+> All methods returning a Task should have an optional *CancellationToken* input parameter.
+
+```csharp
+public async Task<string> GetMessageAsync(string messageId, CancellationToken = default)
+{
+    var result = await _myHelper
+                            .GetMessageAsync(
+                                    messageId: messageId,
+                                    cancellationToken: cancellationToken);
+    return result;
+}
+
+
+
+```
+
 
 [Back to top](#table-of-content)
 
