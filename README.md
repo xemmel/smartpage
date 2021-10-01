@@ -4,7 +4,9 @@
 
 ## Table of Content
 1. [Tasks](#tasks)
-1. [Azure 101](#azure-101)
+2. [IEnum](#ienum)
+10. [Azure 101](#azure-101)
+
 
 
 
@@ -43,6 +45,29 @@ public async Task<string> GetMessageAsync(string messageId, CancellationToken = 
 }
 
 
+
+```
+
+
+[Back to top](#table-of-content)
+
+## IEnum
+
+
+### Use yield
+
+> If returning a collection where the consumer may og may not need to process all elements, the return type *IEnumerable* should be used together with a **yield** pattern
+
+```charp
+
+ public static IEnumerable<int> GetSlowNumbersAsIEnum(int count)
+        {
+             for (int i = 0; i < count; i++)
+            {
+                var number = GetSlowNumber(x: i);
+                yield return number;
+            }
+        }
 
 ```
 
