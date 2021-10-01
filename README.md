@@ -5,6 +5,7 @@
 ## Table of Content
 1. [Tasks](#tasks)
 2. [IEnum](#ienum)
+3. [Var](#var)
 10. [Azure 101](#azure-101)
 
 
@@ -58,7 +59,7 @@ public async Task<string> GetMessageAsync(string messageId, CancellationToken = 
 
 > If returning a collection where the consumer may og may not need to process all elements, the return type *IEnumerable* should be used together with a **yield** pattern
 
-```charp
+```csharp
 
  public static IEnumerable<int> GetSlowNumbersAsIEnum(int count)
         {
@@ -71,6 +72,89 @@ public async Task<string> GetMessageAsync(string messageId, CancellationToken = 
 
 ```
 
+### Return what you got
+> The return type of a **method** should be whatever the method has
+
+```csharp
+
+//Wrong
+//Although totally valid, the consumer might actually need a List and call .ToList()
+//even though not needed.
+
+public static IEnumerable<int> GetNumbers()
+{
+    List<int> result = new List<int>();
+    result.AddRange(....);
+    return result;
+}
+
+//Correct
+public static List<int> GetNumbers()
+{
+    List<int> result = new List<int>();
+    result.AddRange(....);
+    return result;
+}
+
+```
+
+### Only ask for what you need when working with parameters
+
+```csharp
+
+//Wrong
+//Why require a List<string> when Array (string[]) and all other types that implement
+//IEnumerable<string> is sufficient?
+public static void ProcessElements(List<string> elements)
+{
+    foreach(var element in elements)
+    {
+      Process(element);
+    }
+}
+
+//Correct
+public static void ProcessElements(IEnumerable<string> elements)
+{
+    foreach(var element in elements)
+    {
+      Process(element);
+    }
+}
+
+//Correct if other behaviors are needed
+//If we know that we also need to do operations that IEnumerable will not supply
+//We use the minimal required interface
+public static void ProcessElements(ICollection<string> elements)
+{
+    elements.Add("test");
+    foreach(var element in elements)
+    {
+      Process(element);
+    }
+}
+
+
+```
+
+[Back to top](#table-of-content)
+
+## Var
+
+> Use var if there is an explicit human readable way to interpret what the type is
+
+```csharp
+
+var person = GetPerson(); //Ok
+var i = 10; //Bad, don't let the compiler make decisions for you;
+int i = 10; //Ok
+
+var personHandler = new PersonHandler(); //Be carefull, if PersonHandler implements an interface, it might be what we want instead
+IPersonHandler personHandler = new PersonHandler(); //Ok
+
+
+
+```
 
 [Back to top](#table-of-content)
 
