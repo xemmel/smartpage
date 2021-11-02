@@ -174,7 +174,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```powershell
 choco install azure-cli -y
 ```
+> Install Functions CLI
 
+```bash
+choco install azure-functions-core-tools
+```
 > Upgrade choco packages
 
 ```powershell
